@@ -1,0 +1,24 @@
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 100%;
+    padding-block: 2rem;
+}
+div .result{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+img{
+    height: 60vh;
+    width: 60vw;
+    max-width: max-content;
+    max-height: max-content;
+    border-radius: 1rem;
+    cursor: pointer;
+}

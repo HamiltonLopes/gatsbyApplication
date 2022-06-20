@@ -1,26 +1,51 @@
-import React, {useRef, useState} from "react"
+import React, {  useState, useEffect } from "react"
 import axios from 'axios';
-import Layout from "../components/layout"
+import Layout from "../components/layout";
+import { AuthContext } from "../context/SearchContext";
+import './index.css';
 
 export default function Home() {
-  const inputValue = useRef();
-  const [digimons, setDigimons] = useState(null);
-  const handleSubmite = async (e) => {
-    e.preventDefault();
-    try{
-      const digimon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${inputValue.current.value}`);
-      setDigimons(digimon.data.sprites.front_default);
-      console.log(digimon);
-    }catch(e){
-      console.error(e);
-    }
+  const { search } = React.useContext(AuthContext);
+  const [narutoChar, setNarutoChar] = useState({ name: "", image: [] });
+  const [mainImage, setMainImage] = useState(0);
+
+  function handleClick (){
+    if(mainImage < narutoChar.image.length-1)
+      setMainImage(prevMainImage => prevMainImage + 1);
+    else
+      setMainImage(0);
   }
-  return <Layout>
-      Hello world!
-      <form onSubmit={handleSubmite}>
-          <input ref = {inputValue} type="text" defaultValue={"teste"} />
-          <button>vai</button>
-      </form>
-      {digimons && <img src={digimons}/>}
-  </Layout>
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const narutoResult = await axios.get(`https://naruto-api.herokuapp.com/api/v1/characters/${search}`);
+        console.log(await narutoResult);
+        setNarutoChar({
+          name: await narutoResult.data.name,
+          image: await narutoResult.data.images
+        });
+        console.log(search);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    fetchData();
+  }, [search]);
+
+  return (
+    <Layout>
+      <section>
+        {search === '' ?
+          <p>Hello world!</p>
+          :
+          <div className={'result'}>
+            <p>{narutoChar.name}</p>
+            {(narutoChar?.image?.length > 0) &&
+            <img onClick={handleClick} alt={narutoChar.name} src={narutoChar.image[mainImage] } />}
+          </div>
+        }
+      </section>
+    </Layout>
+  )
 }

@@ -1,16 +1,18 @@
 import React from 'react';
-import Header from "./header";
 import Footer from './footer';
 import ResponsiveAppBar from './ResponsiveAppBar';
+import './layout.css';
 
 const Layout = props => {
-    return(
-        <div>
-            <ResponsiveAppBar />
-            {props.children}
-            <Footer />
+    return (
+        <div className={'dad'}>
+                    <ResponsiveAppBar />
+                <div className={'children'}>
+                    {props.children}
+                </div>
+                    <Footer />
         </div>
-    )
+    );
 }
 
 export default Layout;
